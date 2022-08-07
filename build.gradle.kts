@@ -6,6 +6,7 @@ plugins {
 	kotlin("jvm") version "1.6.21"
 	kotlin("plugin.spring") version "1.6.21"
 	id("io.gitlab.arturbosch.detekt").version("1.21.0-RC2")
+	id("jacoco")
 }
 
 group = "com.goncalo"
@@ -49,7 +50,27 @@ tasks.withType<Test> {
 	useJUnitPlatform()
 }
 
-// detekt configuration block.
+tasks.test {
+	finalizedBy(tasks.jacocoTestReport) // report is always generated after tests run
+}
+
+
+
+tasks.jacocoTestCoverageVerification {
+	violationRules {
+		rule {
+			limit {
+				minimum = "0.8".toBigDecimal()
+			}
+		}
+	}
+}
+
+
+tasks.jacocoTestReport {
+	dependsOn(tasks.test) // tests are required to run before generating the report
+}
+
 detekt {
 	// Version of Detekt that will be used. When unspecified the latest detekt
 	// version found will be used. Override to stay on the same version.
@@ -93,4 +114,8 @@ detekt {
 	// Specify the base path for file paths in the formatted reports.
 	// If not set, all file paths reported will be absolute file path.
 	basePath = projectDir.toString()
+}
+
+jacoco {
+	toolVersion = "0.8.8"
 }
