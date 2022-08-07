@@ -30,7 +30,6 @@ dependencies {
 	testImplementation("io.mockk:mockk:1.12.4")
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
 	testImplementation("io.projectreactor:reactor-test")
-	testImplementation("org.springframework.amqp:spring-rabbit-test")
 
 	// Test Fixtures
 	testImplementation("net.datafaker:datafaker:1.4.0")
