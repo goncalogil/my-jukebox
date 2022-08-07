@@ -28,7 +28,8 @@ class RedisConfiguration(
             null,
         )
         val serializer = GenericJackson2JsonRedisSerializer(redisObjectMapper)
-        val builder: RedisSerializationContext.RedisSerializationContextBuilder<K, V> = newSerializationContext(serializer)
+        val builder: RedisSerializationContext.RedisSerializationContextBuilder<K, V>
+        = newSerializationContext(serializer)
         return ReactiveRedisTemplate<K, V>(factory, builder.build())
     }
 }

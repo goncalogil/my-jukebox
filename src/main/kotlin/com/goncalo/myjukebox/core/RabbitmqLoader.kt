@@ -15,6 +15,11 @@ class RabbitmqLoader(
     override fun run(vararg args: String?) {
         println("Sending message...")
         rabbitTemplate.convertAndSend(RabbitmqConfiguration.topicExchangeName, "foo.bar.baz", "Hello from RabbitMQ")
-        receiver.latch.await(1000, TimeUnit.MILLISECONDS)
+        receiver.latch.await(RABBIT_LATCH_TIMEOUT_MILLISECONDS.toLong(), TimeUnit.MILLISECONDS)
     }
+
+    companion object {
+        const val RABBIT_LATCH_TIMEOUT_MILLISECONDS = 1000;
+    }
+
 }

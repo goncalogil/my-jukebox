@@ -2,10 +2,12 @@ package com.goncalo.myjukebox.controller
 
 import com.goncalo.myjukebox.domain.Classification
 import com.goncalo.myjukebox.domain.Song
-import com.goncalo.myjukebox.domain.SongClassification
 import com.goncalo.myjukebox.repository.ClassificationRepository
-import org.springframework.web.bind.annotation.*
-import reactor.core.publisher.Flux
+import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.PathVariable
+import org.springframework.web.bind.annotation.RequestBody
 import reactor.core.publisher.Mono
 
 @RestController
@@ -22,4 +24,8 @@ class VoteController(
         @RequestBody song: Song
     ) : Mono<Unit> =
         classificationRepository.incrementSongVotes(poolId, song)
+
+    @GetMapping("/vote/{poolId}/first")
+    fun getMostVoted(@PathVariable poolId: String): Mono<Song> =
+        classificationRepository.getSongWithHighestScore(poolId)
 }

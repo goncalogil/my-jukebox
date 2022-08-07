@@ -28,15 +28,14 @@ class ClassificationRepository(
             .map {
                 val songVotes = it.score?.toInt() ?: 0
                 totalVotes += songVotes
-                it.value?.let{ song -> SongClassification(Song( song.getId(), song.getName() ), songVotes) }
+                it.value?.let{ song -> SongClassification(Song( song.id, song.name ), songVotes) }
             }
             .collectList()
             .single()
-            .flatMap {
-                Mono.just(Classification(totalVotes, it))
+            .map {
+                Classification(totalVotes, it.sortedByDescending { song -> song.votes })
             }
     }
-
 
     private fun getClassificationKey(poolId: String): String = "$poolId:$classificationSuffix"
     private val classificationSuffix = "classification"
